@@ -5,13 +5,13 @@ public class Personaje {
     private int vida;
     protected int damage;
     //Constructor
-    public Personaje(String nombre, int vida, int damage){
-        this.nombre=nombre;
+    public Personaje(String nombre, int vida, int damage) {
+        this.nombre = nombre;
         this.setVida(vida);
         this.setDamage(damage);
     }
     //Getters
-    public String getName() {
+    public String getNombre() {
         return nombre;
     }
     public int getDamage(){
