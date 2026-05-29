@@ -7,7 +7,7 @@ import java.util.Random;
 public class Mercader {
     // Atributos
     private String nombre;
-    private Item[] inventario; // pool completo de items
+    private Item[] inventario; //  Total de items del mercader
 
     // Constructor
     public Mercader(String nombre, Item[] inventario) {
