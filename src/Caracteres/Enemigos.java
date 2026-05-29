@@ -10,21 +10,32 @@ public class Enemigos extends Personaje{
         super(nombre, vida, damage);
         this.sector = sector;
         this.creditosRecompensa = creditosRecompensa;
-        }
-        public int getSector() {
-            return sector;
-        }
-        public int getCreditosRecompensa(){
-            return creditosRecompensa;
-        }
-
-        //Setters
-        public void setSector(int sector) {
-            if (sector < 0){
-                sector = 0; // el sector nunca puede ser negativo
-            }else{
-                this.sector = sector;
-            }
-        }
     }
+
+    //Setters
+    public int getSector() {
+        return sector;
+    }
+
+    public int getCreditosRecompensa() {
+        return creditosRecompensa;
+    }
+
+    // Verifica si el enemigo sigue vivo
+    public boolean estaVivo() {
+        return getVida() > 0;
+    }
+
+    // Metodo base — las subclases lo sobreescriben
+    @Override
+    public String atacar() {
+        return getNombre() + " realiza un ataque estandar. Damage: " + getDamage();
+    }
+
+    @Override
+    public String toString() {
+        return getNombre() + " | Vida: " + getVida() + " | Sector: " + sector;
+    }
+}
+
 
