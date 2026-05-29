@@ -1,6 +1,6 @@
 package Caracteres;
 
-public class EnemigoDrone {
+public class EnemigoDrone extends Enemigos{
   private int velocidad;
 
   public EnemigoDrone(String nombre, int vida, int damage, int sector, int creditos, int velocidad) {
@@ -14,3 +14,4 @@ public class EnemigoDrone {
     public String atacar() {
         return getNombre() + " ejecuta un ataque relampago a velocidad " + velocidad + "! Damage: " + getDamage();
     }
+}
