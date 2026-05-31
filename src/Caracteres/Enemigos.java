@@ -12,7 +12,6 @@ public class Enemigos extends Personaje{
         this.creditosRecompensa = creditosRecompensa;
     }
 
-    //Setters
     public int getSector() {
         return sector;
     }
@@ -21,12 +20,10 @@ public class Enemigos extends Personaje{
         return creditosRecompensa;
     }
 
-    // Verifica si el enemigo sigue vivo
     public boolean estaVivo() {
         return getVida() > 0;
     }
 
-    // Metodo base — las subclases lo sobreescriben
     @Override
     public String atacar() {
         return getNombre() + " realiza un ataque estandar. Damage: " + getDamage();
