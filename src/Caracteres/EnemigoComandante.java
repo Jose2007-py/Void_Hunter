@@ -17,7 +17,7 @@ public class EnemigoComandante extends Enemigo {
     @Override
     public String atacar() {
         if (getVida() < 50 && llamadaRefuerzo) {
-            return getNombre() + " activa protocolo ULTIMA ORDEN! Ataque devastador! Damage: " + (getDamage() * 2);
+            return getNombre() + " activa ULTIMA ORDEN! Ataque devastador! Damage: " + (getDamage() * 2);
         }
         return getNombre() + " dispara canones de plasma! Damage: " + getDamage();
     }

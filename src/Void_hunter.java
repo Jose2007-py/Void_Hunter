@@ -185,6 +185,96 @@ public class Void_hunter {
             }
         }
     }
+    //funcion combate 
+      public static boolean combate(Nave nave, Enemigo enemigo, Random rand,
+                                  Scanner scanner, boolean puedeEscapar, String nombrePiloto) {
+
+        int costoEscape = randRango(rand, 10, 25);
+
+        System.out.println("Combate: " + nave.getNombre() + " vs " + enemigo.getNombre());
+        System.out.println(nave);
+        System.out.println(enemigo + "\n");
+
+        boolean turnoJugador = rand.nextBoolean();
+        System.out.println(turnoJugador
+                ? "Tu nave ataca primero, " + nombrePiloto + "!\n"
+                : enemigo.getNombre() + " ataca primero!\n");
+
+        boolean turnoSaltado = false;
+
+        while (nave.estaViva() && enemigo.estaVivo()) {
+
+            if (turnoJugador) {
+                if (turnoSaltado) {
+                    System.out.println("[ Tu nave recarga sistemas... turno perdido ]\n");
+                    turnoSaltado = false;
+                    turnoJugador = false;
+                    continue;
+                }
+
+                System.out.println("Tu turno, " + nombrePiloto
+                        + ". Vida=" + nave.getVida()
+                        + "  Damage=" + nave.getDamage()
+                        + "  Creditos=" + nave.getCreditos());
+                System.out.println("[1] Atacar");
+                System.out.println("[2] Ataque cargado (dano x2, pierdes siguiente turno)");
+                if (puedeEscapar && nave.getCreditos() >= costoEscape) {
+                    System.out.println("[3] Intentar escapar (cuesta " + costoEscape + " creditos, 50% exito)");
+                }
+                System.out.print("Opcion: ");
+                int opcion = scanner.nextInt();
+
+                if (opcion == 1) {
+                    System.out.println("\n" + nave.atacar());
+                    enemigo.setVida(enemigo.getVida() - nave.getDamage());
+                    System.out.println(enemigo.getNombre() + " | Vida restante: " + enemigo.getVida() + "\n");
+
+                } else if (opcion == 2) {
+                    int danoCargado = nave.getDamage() * 2;
+                    System.out.println("\n" + nave.getNombre() + " carga todos los sistemas! Dano: " + danoCargado);
+                    enemigo.setVida(enemigo.getVida() - danoCargado);
+                    System.out.println(enemigo.getNombre() + " | Vida restante: " + enemigo.getVida());
+                    System.out.println("[ Sistemas sobrecalentados — perderas el siguiente turno ]\n");
+                    turnoSaltado = true;
+
+                } else if (opcion == 3 && puedeEscapar && nave.getCreditos() >= costoEscape) {
+                    nave.setCreditos(nave.getCreditos() - costoEscape);
+                    System.out.println("\nUsas " + costoEscape + " creditos de combustible...");
+                    if (rand.nextBoolean()) {
+                        System.out.println("Escape exitoso, " + nombrePiloto + "! Creditos restantes: " + nave.getCreditos() + "\n");
+                        return true;
+                    } else {
+                        System.out.println("El escape fallo, " + nombrePiloto + "! " + enemigo.getNombre() + " aprovecha y ataca!\n");
+                        System.out.println(enemigo.atacar());
+                        nave.setVida(nave.getVida() - enemigo.getDamage());
+                        System.out.println(nave.getNombre() + " | Vida restante: " + nave.getVida() + "\n");
+                        if (!nave.estaViva()) return false;
+                    }
+                } else {
+                    System.out.println("\nOpcion no valida, atacando normal...");
+                    System.out.println(nave.atacar());
+                    enemigo.setVida(enemigo.getVida() - nave.getDamage());
+                    System.out.println(enemigo.getNombre() + " | Vida restante: " + enemigo.getVida() + "\n");
+                }
+
+            } else {
+                System.out.println(enemigo.atacar());
+                nave.setVida(nave.getVida() - enemigo.getDamage());
+                System.out.println(nave.getNombre() + " | Vida restante: " + nave.getVida() + "\n");
+            }
+
+            turnoJugador = !turnoJugador;
+        }
+
+        if (!enemigo.estaVivo()) {
+            System.out.println(">> " + enemigo.getNombre() + " destruido! +"
+                    + enemigo.getCreditosRecompensa() + " creditos <<\n");
+            nave.setCreditos(nave.getCreditos() + enemigo.getCreditosRecompensa());
+        }
+
+        return false;
+    }
+
 
 
 

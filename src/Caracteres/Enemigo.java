@@ -31,7 +31,7 @@ public class Enemigo extends Personaje{
 
     @Override
     public String toString() {
-        return getNombre() + " | Vida: " + getVida() + " | Sector: " + sector;
+        return getNombre() + " Vida: " + getVida() + " Sector: " + sector;
     }
 }
 
