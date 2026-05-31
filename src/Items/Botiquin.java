@@ -26,7 +26,7 @@ public class Botiquin extends Item {
     }
     @Override
     public String toString() {
-        return getNombre() + " | " + getDescripcion()
-                + " | +"+vidaRestaurada+" vida | Precio: " + getPrecio() + " creditos";
+        return getNombre() + "  " + getDescripcion()
+                + "  +"+vidaRestaurada+" vida  Precio: " + getPrecio() + " creditos";
     }
 }

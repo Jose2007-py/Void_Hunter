@@ -26,7 +26,7 @@ public class Arma extends Item {
     }
     @Override
     public String toString() {
-        return getNombre() + " | " + getDescripcion()
-                + " | +"+bonusDamage+" damage | Precio: " + getPrecio() + " creditos";
+        return getNombre() + "  " + getDescripcion()
+                + "  +"+bonusDamage+" damage  Precio: " + getPrecio() + " creditos";
     }
 }

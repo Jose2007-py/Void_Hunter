@@ -30,7 +30,7 @@ public class Item {
     }
     @Override
     public String toString() {
-        return nombre + " | " + descripcion + " | Precio: " + precio + " creditos";
+        return nombre + "  " + descripcion + "  Precio: " + precio + " creditos";
     }
 
 }

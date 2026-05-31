@@ -38,7 +38,7 @@ public class Personaje {
     }
     @Override
     public String toString(){
-        return nombre + " | Vida: " + vida + " | Damage: " + damage;
+        return nombre + "  Vida: " + vida + "  Damage: " + damage;
     }
 
 }

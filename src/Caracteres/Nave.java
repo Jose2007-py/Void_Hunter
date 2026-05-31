@@ -39,7 +39,7 @@ public class Nave extends Personaje{
      }
     @Override
     public String toString() {
-        return getNombre() + " | Vida: " + getVida() + " | Damage: " + getDamage()
-                + " | Escudo: " + escudo + " | Creditos: " + creditos;
+        return getNombre() + "  Vida: " + getVida() + "  Damage: " + getDamage()
+                + "  Escudo: " + escudo + "  Creditos: " + creditos;
     }
 }

@@ -3,22 +3,29 @@ import Items.Arma;
 import Items.Botiquin;
 import Items.Item;
 import Mercader.Mercader;
-
 import java.util.Random;
 import java.util.Scanner;
 
 public class Void_hunter {
-
     public static void main(String[] args) {
-
         Scanner scanner = new Scanner(System.in);
         String nombrePiloto = "";
         boolean jugarDeNuevo;
-
         do {
             Random rand = new Random();
 
             System.out.println("BIENVENIDO AL RPG ESPACIAL — VOID HUNTER");
+            System.out.println("Demostración polimorfismo");
+            Personaje[] todos = {
+                    new EnemigoPirata("Demo Pirata",    60, 15, 1, 25, 5),
+                    new EnemigoDrone("Demo Drone",      50, 12, 1, 20, 85),
+                    new EnemigoMecanoide("Demo Meca",  100, 30, 2, 40, 3),
+                    new EnemigoGuardian("Demo Guard",  110, 25, 2, 45, 40),
+                    new EnemigoComandante("Demo Jefe", 200, 50, 3,  0, true)
+            };
+            for (Personaje p : todos) {
+                System.out.println(p.atacar());
+            }
             System.out.print("Ingresa tu nombre, piloto: ");
             nombrePiloto = scanner.nextLine().trim();
             if (nombrePiloto.isEmpty()) nombrePiloto = "Piloto";
@@ -31,7 +38,6 @@ public class Void_hunter {
             EnemigoComandante jefe = new EnemigoComandante("COMANDANTE ATLAS",
                     randRango(rand, 180, 220), randRango(rand, 45, 60), 3, 0, true);
             Mercader zyx = crearMercader(rand);
-
             // Jugar  3 sectores
             System.out.println(" SECTOR 1 — CINTURON DE ASTEROIDES ");
             if (!jugarSector(sector1, miNave, zyx, rand, scanner, true, nombrePiloto)) {
@@ -53,15 +59,7 @@ public class Void_hunter {
             System.out.print("\n¿Jugar de nuevo? (s/n): ");
             jugarDeNuevo = scanner.next().equalsIgnoreCase("s");
             scanner.nextLine();
-
-
-
-
-
         } while (jugarDeNuevo);
-
-
-
     }
     //funcion numero random en rango
     public static int randRango(Random rand, int min, int max) {
@@ -76,7 +74,6 @@ public class Void_hunter {
             naves[i] = new Nave(nombres[i], randRango(rand, 60, 180),
                     randRango(rand, 15, 70), randRango(rand, 0, 60), randRango(rand, 80, 120));
         }
-
         int a = rand.nextInt(10), b;
         do {
             b = rand.nextInt(10);
@@ -92,7 +89,6 @@ public class Void_hunter {
             if (eleccion != 1 && eleccion != 2)
                 System.out.println("Elige 1 o 2.\n");
         } while (eleccion != 1 && eleccion != 2);
-
         Nave elegida;
         if (eleccion == 1) {
             elegida = naves[a];
@@ -100,8 +96,6 @@ public class Void_hunter {
             elegida = naves[b];
         }        System.out.println("Elegiste: " + elegida.getNombre() + ". A luchar, " + nombrePiloto + "!\n");
         return elegida;
-
-
     }
     //Crear enemigos sector 1
     public static Enemigo[] enemigosSector1(Random rand) {
@@ -116,8 +110,7 @@ public class Void_hunter {
                     randRango(rand, 10, 25), 1, randRango(rand, 20, 40), randRango(rand, 70, 99));
         return lista;
     }
-
-    //Crear enemigos sector 2 
+    //Crear enemigos sector 2
     public static Enemigo[] enemigosSector2(Random rand) {
         String[] mecanoides = {"Mecanoide X-7", "Mecanoide Z-12", "Mecanoide R-9", "Mecanoide T-4"};
         String[] guardianes = {"Guardian Alpha", "Guardian Omega", "Guardian Sigma", "Guardian Delta"};
@@ -146,8 +139,7 @@ public class Void_hunter {
         return new Mercader("Zyx, el Mercader Intergalactico", items);
     }
     //funcion para jugar un sector
-    public static boolean jugarSector(Enemigo[] lista, Nave nave, Mercader mercader, Random rand,
-                                      Scanner scanner, boolean hayMercader, String nombrePiloto) {
+    public static boolean jugarSector(Enemigo[] lista, Nave nave, Mercader mercader, Random rand, Scanner scanner, boolean hayMercader, String nombrePiloto) {
         for (int encuentro = 0; encuentro < 2; encuentro++) {
             if (encuentro >= lista.length) break;
 
@@ -186,9 +178,7 @@ public class Void_hunter {
         }
     }
     //funcion combate 
-      public static boolean combate(Nave nave, Enemigo enemigo, Random rand,
-                                  Scanner scanner, boolean puedeEscapar, String nombrePiloto) {
-
+      public static boolean combate(Nave nave, Enemigo enemigo, Random rand, Scanner scanner, boolean puedeEscapar, String nombrePiloto) {
         int costoEscape = randRango(rand, 10, 25);
 
         System.out.println("Combate: " + nave.getNombre() + " vs " + enemigo.getNombre());
@@ -196,7 +186,6 @@ public class Void_hunter {
         System.out.println(enemigo + "\n");
 
         boolean turnoJugador = rand.nextBoolean();
-
             if (turnoJugador) {
                 System.out.println("Tu nave ataca primero, " + nombrePiloto + "!\n");
             } else {
@@ -206,7 +195,6 @@ public class Void_hunter {
         boolean turnoSaltado = false;
 
         while (nave.estaViva() && enemigo.estaVivo()) {
-
             if (turnoJugador) {
                 if (turnoSaltado) {
                     System.out.println("[ Tu nave debe recargar sistemas... turno perdido ]\n");
@@ -214,7 +202,6 @@ public class Void_hunter {
                     turnoJugador = false;
                     continue;
                 }
-
                 System.out.println("Tu turno, " + nombrePiloto
                         + ". Vida=" + nave.getVida()
                         + "  Damage=" + nave.getDamage()
@@ -265,24 +252,19 @@ public class Void_hunter {
                 nave.setVida(nave.getVida() - enemigo.getDamage());
                 System.out.println(nave.getNombre() + " Vida restante: " + nave.getVida() + "\n");
             }
-
             turnoJugador = !turnoJugador;
         }
-
         if (!enemigo.estaVivo()) {
             System.out.println(enemigo.getNombre() + " destruido! +"
                     + enemigo.getCreditosRecompensa() + " creditos\n");
             nave.setCreditos(nave.getCreditos() + enemigo.getCreditosRecompensa());
         }
-
         return false;
     }
     //funcion para visitar al mercader
-    public static void visitarMercader(Mercader mercader, Nave nave,
-                                       Scanner scanner, String nombrePiloto) {
+    public static void visitarMercader(Mercader mercader, Nave nave, Scanner scanner, String nombrePiloto) {
         System.out.println(mercader.getNombre() + " aparece!");
         System.out.println(nombrePiloto + ", tienes " + nave.getCreditos() + " creditos.");
-
         Item[] oferta = mercader.ofrecerItems();
         System.out.println("Tengo esto para ti:\n");
         for (int i = 0; i < oferta.length; i++) {
