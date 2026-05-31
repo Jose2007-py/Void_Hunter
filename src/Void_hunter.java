@@ -26,6 +26,12 @@ public class Void_hunter {
 
             Nave miNave = elegirNave(scanner, rand, nombrePiloto);
 
+            Enemigo[] sector1 = enemigosSector1(rand);
+            Enemigo[] sector2 = enemigosSector2(rand);
+            EnemigoComandante jefe = new EnemigoComandante("COMANDANTE ATLAS",
+                    randRango(rand, 180, 220), randRango(rand, 45, 60), 3, 0, true);
+
+
 
 
 
@@ -66,5 +72,34 @@ public class Void_hunter {
         Nave elegida = (eleccion == 1) ? naves[a] : naves[b];
         System.out.println("Elegiste: " + elegida.getNombre() + ". A luchar, " + nombrePiloto + "!\n");
         return elegida;
+
+
+    }
+    //Crear enemigos sector 1
+    public static Enemigo[] enemigosSector1(Random rand) {
+        String[] piratas = {"Pirata Krak", "Pirata Vex", "Pirata Rogue", "Pirata Skar"};
+        String[] drones  = {"Drone Scout", "Drone Asesino", "Drone Raptor", "Drone Sombra"};
+        Enemigo[] lista = new Enemigo[8];
+        for (int i = 0; i < 4; i++)
+            lista[i] = new EnemigoPirata(piratas[i], randRango(rand, 40, 80),
+                    randRango(rand, 10, 25), 1, randRango(rand, 20, 40), randRango(rand, 3, 8));
+        for (int i = 0; i < 4; i++)
+            lista[4 + i] = new EnemigoDrone(drones[i], randRango(rand, 40, 80),
+                    randRango(rand, 10, 25), 1, randRango(rand, 20, 40), randRango(rand, 70, 99));
+        return lista;
+    }
+
+    //Crear enemigos sector 2 
+    public static Enemigo[] enemigosSector2(Random rand) {
+        String[] mecanoides = {"Mecanoide X-7", "Mecanoide Z-12", "Mecanoide R-9", "Mecanoide T-4"};
+        String[] guardianes = {"Guardian Alpha", "Guardian Omega", "Guardian Sigma", "Guardian Delta"};
+        Enemigo[] lista = new Enemigo[8];
+        for (int i = 0; i < 4; i++)
+            lista[i] = new EnemigoMecanoide(mecanoides[i], randRango(rand, 80, 120),
+                    randRango(rand, 25, 40), 2, randRango(rand, 35, 55), randRango(rand, 1, 5));
+        for (int i = 0; i < 4; i++)
+            lista[4 + i] = new EnemigoGuardian(guardianes[i], randRango(rand, 80, 120),
+                    randRango(rand, 25, 40), 2, randRango(rand, 35, 55), randRango(rand, 20, 60));
+        return lista;
     }
 }
