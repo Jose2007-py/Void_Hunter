@@ -146,19 +146,19 @@ public class Void_hunter {
         return new Mercader("Zyx, el Mercader Intergalactico", items);
     }
     //funcion para jugar un sector
-    public static boolean jugarSector(Enemigo[] pool, Nave nave, Mercader mercader, Random rand,
+    public static boolean jugarSector(Enemigo[] lista, Nave nave, Mercader mercader, Random rand,
                                       Scanner scanner, boolean hayMercader, String nombrePiloto) {
         for (int encuentro = 0; encuentro < 2; encuentro++) {
-            if (encuentro >= pool.length) break;
+            if (encuentro >= lista.length) break;
 
-            int idx = rand.nextInt(pool.length);
-            Enemigo enemigo = crearEnemigo(pool[idx].getNombre(), pool[idx].getSector(), rand);
+            int indice = rand.nextInt(lista.length);
+            Enemigo enemigo = crearEnemigo(lista[indice].getNombre(), lista[indice].getSector(), rand);
             boolean puedeEscapar = (encuentro == 1);
             boolean escapo = combate(nave, enemigo, rand, scanner, puedeEscapar, nombrePiloto);
 
             if (!nave.estaViva()) return false;
             if (escapo) {
-                System.out.println("Escapaste y sigues tu ruta, " + nombrePiloto + "...\n");
+                System.out.println("Escapaste y sigues tu ruta, " + nombrePiloto + "!\n");
                 break;
             }
         }
@@ -196,9 +196,12 @@ public class Void_hunter {
         System.out.println(enemigo + "\n");
 
         boolean turnoJugador = rand.nextBoolean();
-        System.out.println(turnoJugador
-                ? "Tu nave ataca primero, " + nombrePiloto + "!\n"
-                : enemigo.getNombre() + " ataca primero!\n");
+
+            if (turnoJugador) {
+                System.out.println("Tu nave ataca primero, " + nombrePiloto + "!\n");
+            } else {
+                System.out.println(enemigo.getNombre() + " ataca primero!\n");
+            }
 
         boolean turnoSaltado = false;
 
@@ -206,7 +209,7 @@ public class Void_hunter {
 
             if (turnoJugador) {
                 if (turnoSaltado) {
-                    System.out.println("[ Tu nave recarga sistemas... turno perdido ]\n");
+                    System.out.println("[ Tu nave debe recargar sistemas... turno perdido ]\n");
                     turnoSaltado = false;
                     turnoJugador = false;
                     continue;
@@ -227,19 +230,19 @@ public class Void_hunter {
                 if (opcion == 1) {
                     System.out.println("\n" + nave.atacar());
                     enemigo.setVida(enemigo.getVida() - nave.getDamage());
-                    System.out.println(enemigo.getNombre() + " | Vida restante: " + enemigo.getVida() + "\n");
+                    System.out.println(enemigo.getNombre() + " Vida restante: " + enemigo.getVida() + "\n");
 
                 } else if (opcion == 2) {
                     int danoCargado = nave.getDamage() * 2;
                     System.out.println("\n" + nave.getNombre() + " carga todos los sistemas! Dano: " + danoCargado);
                     enemigo.setVida(enemigo.getVida() - danoCargado);
-                    System.out.println(enemigo.getNombre() + " | Vida restante: " + enemigo.getVida());
-                    System.out.println("[ Sistemas sobrecalentados — perderas el siguiente turno ]\n");
+                    System.out.println(enemigo.getNombre() + " Vida restante: " + enemigo.getVida());
+                    System.out.println(" Sistemas sobrecalentados — perderas el siguiente turno \n");
                     turnoSaltado = true;
 
                 } else if (opcion == 3 && puedeEscapar && nave.getCreditos() >= costoEscape) {
                     nave.setCreditos(nave.getCreditos() - costoEscape);
-                    System.out.println("\nUsas " + costoEscape + " creditos de combustible...");
+                    System.out.println("\nUsas " + costoEscape + " creditos de combustible");
                     if (rand.nextBoolean()) {
                         System.out.println("Escape exitoso, " + nombrePiloto + "! Creditos restantes: " + nave.getCreditos() + "\n");
                         return true;
@@ -247,46 +250,61 @@ public class Void_hunter {
                         System.out.println("El escape fallo, " + nombrePiloto + "! " + enemigo.getNombre() + " aprovecha y ataca!\n");
                         System.out.println(enemigo.atacar());
                         nave.setVida(nave.getVida() - enemigo.getDamage());
-                        System.out.println(nave.getNombre() + " | Vida restante: " + nave.getVida() + "\n");
+                        System.out.println(nave.getNombre() + " Vida restante: " + nave.getVida() + "\n");
                         if (!nave.estaViva()) return false;
                     }
                 } else {
-                    System.out.println("\nOpcion no valida, atacando normal...");
+                    System.out.println("\nOpcion no valida, atacas normal");
                     System.out.println(nave.atacar());
                     enemigo.setVida(enemigo.getVida() - nave.getDamage());
-                    System.out.println(enemigo.getNombre() + " | Vida restante: " + enemigo.getVida() + "\n");
+                    System.out.println(enemigo.getNombre() + " Vida restante: " + enemigo.getVida() + "\n");
                 }
 
             } else {
                 System.out.println(enemigo.atacar());
                 nave.setVida(nave.getVida() - enemigo.getDamage());
-                System.out.println(nave.getNombre() + " | Vida restante: " + nave.getVida() + "\n");
+                System.out.println(nave.getNombre() + " Vida restante: " + nave.getVida() + "\n");
             }
 
             turnoJugador = !turnoJugador;
         }
 
         if (!enemigo.estaVivo()) {
-            System.out.println(">> " + enemigo.getNombre() + " destruido! +"
-                    + enemigo.getCreditosRecompensa() + " creditos <<\n");
+            System.out.println(enemigo.getNombre() + " destruido! +"
+                    + enemigo.getCreditosRecompensa() + " creditos\n");
             nave.setCreditos(nave.getCreditos() + enemigo.getCreditosRecompensa());
         }
 
         return false;
     }
+    //funcion para visitar al mercader
+    public static void visitarMercader(Mercader mercader, Nave nave,
+                                       Scanner scanner, String nombrePiloto) {
+        System.out.println(mercader.getNombre() + " aparece!");
+        System.out.println(nombrePiloto + ", tienes " + nave.getCreditos() + " creditos.");
 
+        Item[] oferta = mercader.ofrecerItems();
+        System.out.println("Tengo esto para ti:\n");
+        for (int i = 0; i < oferta.length; i++) {
+            System.out.println("  [" + (i + 1) + "] " + oferta[i]);
+        }
+        System.out.println("  [0] No comprar nada");
+        System.out.print("\nOpcion: ");
+        int opcion = scanner.nextInt();
 
-
-
-
-
-
-
-
-
-
-
-
+        if (opcion >= 1 && opcion <= 3) {
+            Item elegido = oferta[opcion - 1];
+            if (nave.getCreditos() >= elegido.getPrecio()) {
+                nave.setCreditos(nave.getCreditos() - elegido.getPrecio());
+                nave.usarItem(elegido);
+                System.out.println("Creditos restantes: " + nave.getCreditos() + "\n");
+            } else {
+                System.out.println("No tienes suficientes creditos, " + nombrePiloto + "!\n");
+            }
+        } else {
+            System.out.println("Seguiste tu camino sin comprar nada.\n");
+        }
+    }
     public static void gameOver(String sector, String nombrePiloto) {
         System.out.println("GAME OVER, " + nombrePiloto + ".");
         System.out.println("Tu nave fue destruida en " + sector + ".");
