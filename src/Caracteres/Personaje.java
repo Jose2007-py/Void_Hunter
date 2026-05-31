@@ -24,7 +24,7 @@ public class Personaje {
     //Setters
     public void setVida(int vida) {
         if (vida < 0){
-            vida = 0; // la vida nunca puede ser negativa
+            this.vida = 0; // la vida nunca puede ser negativa
         }else{
             this.vida = vida;
 
