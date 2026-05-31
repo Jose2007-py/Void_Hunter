@@ -1,12 +1,12 @@
 package Caracteres;
 
-public class Enemigos extends Personaje{
+public class Enemigo extends Personaje{
     private int sector;
     private int creditos;
     private int creditosRecompensa;
     private boolean estaVivo;
 
-    public Enemigos(String nombre, int vida, int damage, int sector, int creditosRecompensa) {
+    public Enemigo(String nombre, int vida, int damage, int sector, int creditosRecompensa) {
         super(nombre, vida, damage);
         this.sector = sector;
         this.creditosRecompensa = creditosRecompensa;

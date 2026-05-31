@@ -1,6 +1,6 @@
 package Caracteres;
 
-public class EnemigoMecanoide extends Enemigos {
+public class EnemigoMecanoide extends Enemigo {
     
     private int nivelEMP;
     

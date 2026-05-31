@@ -1,5 +1,6 @@
-package Caracteres;
+package Mercader;
 
+import Caracteres.Nave;
 import Items.Item;
 
 import java.util.Random;

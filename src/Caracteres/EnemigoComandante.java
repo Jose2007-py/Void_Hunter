@@ -1,6 +1,6 @@
 package Caracteres;
 
-public class EnemigoComandante extends Enemigo{
+public class EnemigoComandante extends Enemigo {
     
    private boolean llamadaRefuerzo;
 

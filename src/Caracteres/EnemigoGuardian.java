@@ -1,6 +1,6 @@
 package Caracteres;
 
-public class EnemigoGuardian extends Enemigos {
+public class EnemigoGuardian extends Enemigo {
     
      private int escudoEnergetico;
 

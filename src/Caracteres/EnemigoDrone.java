@@ -1,6 +1,6 @@
 package Caracteres;
 
-public class EnemigoDrone extends Enemigos{
+public class EnemigoDrone extends Enemigo {
   private int velocidad;
 
   public EnemigoDrone(String nombre, int vida, int damage, int sector, int creditos, int velocidad) {

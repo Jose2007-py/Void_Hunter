@@ -1,6 +1,6 @@
 package Caracteres;
 
-public class EnemigoPirata extends Enemigos {
+public class EnemigoPirata extends Enemigo {
     
     private int cantMisiles;
 

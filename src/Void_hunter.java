@@ -1,44 +1,70 @@
-import Caracteres.Nave;
+import Caracteres.*;
+import Items.Arma;
+import Items.Botiquin;
+import Items.Item;
+import Mercader.Mercader;
 
-import java.util.Scanner;
 import java.util.Random;
-public class Void_hunter{
-   public static void main(String[] args) {
-    Scanner sc=new Scanner(System.in);
-    Random rand=new Random();
+import java.util.Scanner;
 
-       System.out.println("  RPG ESPACIAL — VOID  ");
-       System.out.println("La Federacion Galactica te necesita, piloto.");
-       System.out.println("Cruza los 3 sectores y destruye el arma en");
-       System.out.println("la Estacion Oasis. Buena suerte.\n");
+public class Void_hunter {
 
-       String[] nombresNaves={ "Fenix", "Sombra", "Centinela", "Kraken", "Espectro",
-               "Coloso", "Pulsar", "Requiem", "Valquiria", "Nemesis"};
+    public static void main(String[] args) {
 
-       Nave[] todasLasNaves = new Nave[10];
-        for(int i=0; i<10; i++){
-            int vida= randRango(rand, 80,120);
-            int damage=randRango(rand, 15, 70);
-            int escudo   = randRango(rand,  0,   60);
-            int creditos = randRango(rand, 80,  120);
-            todasLasNaves[i]= new Nave(nombresNaves[i],vida, damage, escudo, creditos);
+        Scanner scanner = new Scanner(System.in);
+        String nombrePiloto = "";
+        boolean jugarDeNuevo;
 
-       }
-       int indice1 = rand.nextInt(10);
-       int indice2;
-       do {
-           indice2 = rand.nextInt(10);
-       } while (indice2 == indice1);
-       System.out.println("Elige tu nave:\n");
-       System.out.println("[1] " + todasLasNaves[indice1]);
-       System.out.println("[2] " + todasLasNaves[indice1]);
-       System.out.print("\nOpcion: ");
+        do {
+            Random rand = new Random();
 
-   }
-    public static int randRango(Random rand, int min, int max) {
+            System.out.println("BIENVENIDO AL RPG ESPACIAL — VOID HUNTER");
+            System.out.print("Ingresa tu nombre, piloto: ");
+            nombrePiloto = scanner.nextLine().trim();
+            if (nombrePiloto.isEmpty()) nombrePiloto = "Piloto";
+            System.out.println("Bienvenido, " + nombrePiloto + ". Destruye el arma en la Estacion Oasis.\n");
 
-       return rand.nextInt(max - min + 1) + min;
+            Nave miNave = elegirNave(scanner, rand, nombrePiloto);
+
+
+
+
+
+        } while ();
+
+
+
     }
+    public static int randRango(Random rand, int min, int max) {
+        return rand.nextInt(max - min + 1) + min;
+    }
+    public static Nave elegirNave(Scanner scanner, Random rand, String nombrePiloto) {
+        String[] nombres = {"Fenix", "Sombra", "Centinela", "Kraken", "Espectro",
+                "Coloso", "Pulsar", "Requiem", "Valquiria", "Nemesis"};
+        Nave[] naves = new Nave[10];
+        for (int i = 0; i < 10; i++) {
+            naves[i] = new Nave(nombres[i], randRango(rand, 60, 180),
+                    randRango(rand, 15, 70), randRango(rand, 0, 60), randRango(rand, 80, 120));
+        }
 
+        int a = rand.nextInt(10), b;
+        do {
+            b = rand.nextInt(10);
+        } while (b == a);
 
+        int eleccion;
+        do {
+            System.out.println("Elige tu nave, " + nombrePiloto + ":");
+            System.out.println("[1] " + naves[a]);
+            System.out.println("[2] " + naves[b]);
+            System.out.print("Opcion: ");
+            eleccion = scanner.nextInt();
+            if (eleccion != 1 && eleccion != 2)
+                System.out.println("Elige 1 o 2.\n");
+        } while (eleccion != 1 && eleccion != 2);
+
+        Nave elegida = (eleccion == 1) ? naves[a] : naves[b];
+        System.out.println("Elegiste: " + elegida.getNombre() + ". A luchar, " + nombrePiloto + "!\n");
+        return elegida;
+    }
 }
