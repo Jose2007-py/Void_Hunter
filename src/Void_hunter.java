@@ -30,20 +30,44 @@ public class Void_hunter {
             Enemigo[] sector2 = enemigosSector2(rand);
             EnemigoComandante jefe = new EnemigoComandante("COMANDANTE ATLAS",
                     randRango(rand, 180, 220), randRango(rand, 45, 60), 3, 0, true);
+            Mercader zyx = crearMercader(rand);
+
+            // Jugar  3 sectores
+            System.out.println(" SECTOR 1 — CINTURON DE ASTEROIDES ");
+            if (!jugarSector(sector1, miNave, zyx, rand, scanner, true, nombrePiloto)) {
+                gameOver("Sector 1", nombrePiloto);
+            } else {
+                System.out.println(" SECTOR 2 — NEBULOSA CRIMSON ");
+                if (!jugarSector(sector2, miNave, zyx, rand, scanner, true, nombrePiloto)) {
+                    gameOver("Sector 2", nombrePiloto);
+                } else {
+                    System.out.println(" SECTOR 3 — ESTACION OASIS ");
+                    System.out.println("El Comandante Atlas te espera, " + nombrePiloto + "...\n");
+                    if (!jugarSector(new Enemigo[]{jefe}, miNave, zyx, rand, scanner, false, nombrePiloto)) {
+                        gameOver("Sector 3", nombrePiloto);
+                    } else {
+                        System.out.println("VICTORIA! Destruiste el arma. La Federacion te lo agradece, " + nombrePiloto + "!");
+                    }
+                }
+            }
+            System.out.print("\n¿Jugar de nuevo? (s/n): ");
+            jugarDeNuevo = scanner.next().equalsIgnoreCase("s");
+            scanner.nextLine();
 
 
 
 
 
-
-        } while ();
+        } while (jugarDeNuevo);
 
 
 
     }
+    //funcion numero random en rango
     public static int randRango(Random rand, int min, int max) {
         return rand.nextInt(max - min + 1) + min;
     }
+    //funcion para elegir nave
     public static Nave elegirNave(Scanner scanner, Random rand, String nombrePiloto) {
         String[] nombres = {"Fenix", "Sombra", "Centinela", "Kraken", "Espectro",
                 "Coloso", "Pulsar", "Requiem", "Valquiria", "Nemesis"};
@@ -69,8 +93,12 @@ public class Void_hunter {
                 System.out.println("Elige 1 o 2.\n");
         } while (eleccion != 1 && eleccion != 2);
 
-        Nave elegida = (eleccion == 1) ? naves[a] : naves[b];
-        System.out.println("Elegiste: " + elegida.getNombre() + ". A luchar, " + nombrePiloto + "!\n");
+        Nave elegida;
+        if (eleccion == 1) {
+            elegida = naves[a];
+        } else {
+            elegida = naves[b];
+        }        System.out.println("Elegiste: " + elegida.getNombre() + ". A luchar, " + nombrePiloto + "!\n");
         return elegida;
 
 
@@ -101,5 +129,76 @@ public class Void_hunter {
             lista[4 + i] = new EnemigoGuardian(guardianes[i], randRango(rand, 80, 120),
                     randRango(rand, 25, 40), 2, randRango(rand, 35, 55), randRango(rand, 20, 60));
         return lista;
+    }
+    //Creacion mercader
+    public static Mercader crearMercader(Random rand) {
+        String[] nomArmas  = {"Canon de Plasma", "Rifle de Antimateria", "Lanzador de Fotones", "Bomba de Pulso", "Railgun Compacto"};
+        String[] descArmas = {"Tecnologia pirata reciclada", "Prototipo militar robado", "Barato pero confiable", "Una sola carga, alto dano", "Lento pero brutal"};
+        String[] nomBots   = {"Nanobots", "Parche de Blindaje", "Celula Regeneradora", "Kit de Emergencia", "Reactor Auxiliar"};
+        String[] descBots  = {"Se autoinstalan en segundos", "Solucion temporal", "Cara pero vale la pena", "Lo minimo para sobrevivir", "Restaura sistemas criticos"};
+
+        Item[] items = new Item[10];
+        for (int i = 0; i < 5; i++)
+            items[i] = new Arma(nomArmas[i], descArmas[i], randRango(rand, 25, 80), randRango(rand, 10, 30));
+        for (int i = 0; i < 5; i++)
+            items[5 + i] = new Botiquin(nomBots[i], descBots[i], randRango(rand, 15, 65), randRango(rand, 15, 50));
+
+        return new Mercader("Zyx, el Mercader Intergalactico", items);
+    }
+    //funcion para jugar un sector
+    public static boolean jugarSector(Enemigo[] pool, Nave nave, Mercader mercader, Random rand,
+                                      Scanner scanner, boolean hayMercader, String nombrePiloto) {
+        for (int encuentro = 0; encuentro < 2; encuentro++) {
+            if (encuentro >= pool.length) break;
+
+            int idx = rand.nextInt(pool.length);
+            Enemigo enemigo = crearEnemigo(pool[idx].getNombre(), pool[idx].getSector(), rand);
+            boolean puedeEscapar = (encuentro == 1);
+            boolean escapo = combate(nave, enemigo, rand, scanner, puedeEscapar, nombrePiloto);
+
+            if (!nave.estaViva()) return false;
+            if (escapo) {
+                System.out.println("Escapaste y sigues tu ruta, " + nombrePiloto + "...\n");
+                break;
+            }
+        }
+        if (hayMercader) visitarMercader(mercader, nave, scanner, nombrePiloto);
+        return true;
+    }
+    //funcion crear enemigo
+    public static Enemigo crearEnemigo(String nombre, int sector, Random rand) {
+        if (sector == 1) {
+            if (nombre.contains("Pirata")) {
+                return new EnemigoPirata(nombre, randRango(rand, 40, 80),
+                        randRango(rand, 10, 25), 1, randRango(rand, 20, 40), randRango(rand, 3, 8));
+            } else {
+                return new EnemigoDrone(nombre, randRango(rand, 40, 80),
+                        randRango(rand, 10, 25), 1, randRango(rand, 20, 40), randRango(rand, 70, 99));
+            }
+        } else {
+            if (nombre.contains("Mecanoide")) {
+                return new EnemigoMecanoide(nombre, randRango(rand, 80, 120),
+                        randRango(rand, 25, 40), 2, randRango(rand, 35, 55), randRango(rand, 1, 5));
+            } else {
+                return new EnemigoGuardian(nombre, randRango(rand, 80, 120),
+                        randRango(rand, 25, 40), 2, randRango(rand, 35, 55), randRango(rand, 20, 60));
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    public static void gameOver(String sector, String nombrePiloto) {
+        System.out.println("GAME OVER, " + nombrePiloto + ".");
+        System.out.println("Tu nave fue destruida en " + sector + ".");
     }
 }
